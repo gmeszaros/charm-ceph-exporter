@@ -1,0 +1,11 @@
+"options":
+  "basic":
+    "use_venv": !!bool "true"
+    "packages": []
+    "include_system_packages": !!bool "false"
+  "ceph-exporter": {}
+"includes":
+- "layer:basic"
+- "interface:http"
+"ignore": [".*.swp"]
+"is": "ceph-exporter"

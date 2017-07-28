@@ -1,0 +1,53 @@
+"options":
+  "port":
+    "type": "int"
+    "default": !!int "9100"
+    "description": "Prometheus ceph_exporter listening port"
+  "install_sources":
+    "default": ""
+    "type": "string"
+    "description": |
+      YAML list of additional installation sources, as a string. The number of
+      install_sources must match the number of install_keys. For example:
+        install_sources: |
+         - ppa:project1/ppa
+         - ppa:project2/ppa
+  "install_keys":
+    "default": ""
+    "type": "string"
+    "description": "YAML list of GPG keys for installation sources, as a string. For\
+      \ apt repository\nURLs, use the public key ID used to verify package signatures.\
+      \ For \nother sources such as PPA, use empty string. This list must have the\
+      \ \nsame number of elements as install_sources, even if the key items are \n\
+      all empty string. An example to go with the above for install_sources:\n  install_keys:\
+      \ |\n   - \"ABC\"\n   - \"\"\n"
+  "textfile_directory":
+    "default": ""
+    "type": "string"
+    "description": |
+      Directory to read text files with metrics from.
+  "ceph.config":
+    "default": "/etc/ceph/ceph.conf"
+    "type": "string"
+    "description": |
+      path to ceph config file
+  "ceph.user"
+    "default": "admin"
+    "type": "string"
+    "description": |
+      Ceph user to connect to cluster. (default "admin")
+  "exporter.config"
+    "default": "/etc/default/ceph/exporter.yml"
+    "type": "string"
+    "description": |
+      Path to ceph exporter config. (default "/etc/ceph/exporter.yml")
+  "telemetry.addr"
+    "default": ":9128"
+    "type": "string"
+    "description": |
+      host:port for ceph exporter (default ":9128")
+  "telemetry.path": 
+    "default": "/metrics"
+    "type": "string"
+    "description": |
+      URL path for surfacing collected metrics (default "/metrics")

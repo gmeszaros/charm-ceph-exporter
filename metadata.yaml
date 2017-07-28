@@ -1,0 +1,16 @@
+"name": "ceph-exporter"
+"summary": "Prometheus ceph_exporter"
+"maintainer": "Gabor Meszaros <gabor.meszaros@canonical.com>"
+"description": |
+  Prometheus exporter for ceph metrics, written in Go with pluggable metric
+  collectors.
+"tags":
+- "monitoring"
+"requires":
+  "host":
+    "interface": "juju-info"
+    "scope": "container"
+"provides":
+  "target":
+    "interface": "http"
+"subordinate": !!bool "true"
