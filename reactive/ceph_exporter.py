@@ -10,8 +10,8 @@ from charms.reactive.helpers import any_file_changed, data_changed
 
 SVCNAME = 'ceph-exporter'
 PKGNAMES = ['ceph-exporter']
-PUSHGATEWAY_DEF = '/etc/default/prometheus-ceph-exporter'
-PUSHGATEWAY_DEF_TMPL = 'etc_default_prometheus-ceph-exporter.j2'
+PUSHGATEWAY_DEF = '/etc/default/ceph-exporter'
+PUSHGATEWAY_DEF_TMPL = 'etc_default_ceph-exporter.j2'
 
 
 def templates_changed(tmpl_list):
