@@ -10,12 +10,6 @@ from charms.reactive.helpers import any_file_changed, data_changed
 
 SVCNAME = 'ceph-exporter'
 PKGNAMES = ['ceph-exporter']
-PUSHGATEWAY_DEF = '/etc/default/ceph-exporter'
-PUSHGATEWAY_DEF_TMPL = 'etc_default_ceph-exporter.j2'
-
-
-def templates_changed(tmpl_list):
-    return any_file_changed(['templates/{}'.format(x) for x in tmpl_list])
 
 
 @when('ceph-exporter.do-install')
@@ -52,11 +46,6 @@ def write_ceph_exporter_config_def():
             os.makedirs(textfile_dir, 0o755)
     args = runtime_args()
     hookenv.log('runtime_args: {}'.format(args))
-    if args:
-        render(source=PUSHGATEWAY_DEF_TMPL,
-               target=PUSHGATEWAY_DEF,
-               context={'args': args},
-               )
     set_state('ceph-exporter.do-restart')
     remove_state('ceph-exporter.do-reconfig-def')
 
@@ -77,12 +66,6 @@ def check_reconfig_ceph_exporter():
         set_state('ceph-exporter.do-install')
 
     if data_changed('ceph-exporter.config', config):
-        set_state('ceph-exporter.do-reconfig-def')
-
-    if any((
-        data_changed('ceph-exporter.args', args),
-        templates_changed([PUSHGATEWAY_DEF_TMPL]),
-    )):
         set_state('ceph-exporter.do-reconfig-def')
 
     remove_state('ceph-exporter.do-check-reconfig')

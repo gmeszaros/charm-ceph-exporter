@@ -36,11 +36,6 @@
     "type": "string"
     "description": |
       Ceph user to connect to cluster. (default "admin")
-  "exporter.config":
-    "default": "/etc/default/ceph/exporter.yml"
-    "type": "string"
-    "description": |
-      Path to ceph exporter config. (default "/etc/ceph/exporter.yml")
   "telemetry.addr":
     "default": ":9128"
     "type": "string"
