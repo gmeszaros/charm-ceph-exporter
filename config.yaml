@@ -1,8 +1,8 @@
 "options":
   "port":
     "type": "int"
-    "default": !!int "9100"
-    "description": "Prometheus ceph_exporter listening port"
+    "default": !!int "9128"
+    "description": "Prometheus ceph_exporter listening port (default 9128)"
   "install_sources":
     "default": ""
     "type": "string"
@@ -21,28 +21,28 @@
       \ \nsame number of elements as install_sources, even if the key items are \n\
       all empty string. An example to go with the above for install_sources:\n  install_keys:\
       \ |\n   - \"ABC\"\n   - \"\"\n"
-  "textfile_directory":
+  "ceph.config":
     "default": ""
     "type": "string"
     "description": |
-      Directory to read text files with metrics from.
-  "ceph.config":
-    "default": "/etc/ceph/ceph.conf"
-    "type": "string"
-    "description": |
-      path to ceph config file
+      path to ceph config file (default /etc/ceph/ceph.conf)
   "ceph.user":
-    "default": "admin"
+    "default": ""
     "type": "string"
     "description": |
       Ceph user to connect to cluster. (default "admin")
-  "telemetry.addr":
-    "default": ":9128"
+  "exporter.config":
+    "default": ""
     "type": "string"
     "description": |
-      host:port for ceph exporter (default ":9128")
+      Path to ceph exporter config. (default "/etc/ceph/exporter.yml")
+  "telemetry.addr":
+    "default": ""
+    "type": "string"
+    "description": |
+      host part of exporter telemetry.addr, port is set via port option (no default)
   "telemetry.path": 
-    "default": "/metrics"
+    "default": ""
     "type": "string"
     "description": |
       URL path for surfacing collected metrics (default "/metrics")
