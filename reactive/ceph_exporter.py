@@ -6,12 +6,68 @@ from charms.reactive import (
     when, when_not, when_any, set_state, remove_state
 )
 from charms.reactive.helpers import any_file_changed, data_changed
+from charmhelpers.contrib.network.ip import (
+    get_address_in_network,
+    get_ipv6_addr
+)
 
 
 SVCNAME = 'ceph_exporter'
 PKGNAMES = ['ceph-exporter']
 CONFIG_DEF = '/etc/default/ceph_exporter'
 CONFIG_DEF_TMPL = 'etc_default_ceph-exporter.j2'
+
+def get_network_addrs(config_opt):
+    """Get all configured public networks addresses.
+
+    If public network(s) are provided, go through them and return the
+    addresses we have configured on any of those networks.
+    """
+    addrs = []
+    networks = hookenv.config(config_opt)
+    if networks:
+        networks = networks.split()
+        addrs = [get_address_in_network(n) for n in networks]
+        addrs = [a for a in addrs if a]
+
+    if not addrs:
+        if networks:
+            msg = ("Could not find an address on any of '%s' - resolve this "
+                   "error to retry" % (networks))
+            status_set('blocked', msg)
+            raise Exception(msg)
+        else:
+            return [get_host_ip()]
+
+    return addrs
+
+def get_host_ip(hostname=None):
+    if hookenv.config('prefer-ipv6'):
+        return get_ipv6_addr()[0]
+
+    hostname = hostname or unit_get('private-address')
+    try:
+        # Test to see if already an IPv4 address
+        socket.inet_aton(hostname)
+        return hostname
+    except socket.error:
+        # This may throw an NXDOMAIN exception; in which case
+        # things are badly broken so just let it kill the hook
+        answers = dns.resolver.query(hostname, 'A')
+        if answers:
+            return answers[0].address
+
+def get_monitoring_addr():
+    if hookenv.config('monitoring-network'):
+        return get_network_addrs('monitoring-network')[0]
+
+    try:
+        return network_get_primary_address('private')
+    except NotImplementedError:
+        log("network-get not supported", DEBUG)
+
+    return get_host_ip()
+
 
 
 def templates_changed(tmpl_list):
@@ -110,4 +166,14 @@ def restart_ceph_exporter():
 def configure_ceph_exporter_relation(target):
     config = hookenv.config()
     if data_changed('target.config', config):
-        target.configure(config.get('port'))
+        target.configure(hostname=get_monitoring_addr(), port=config.get('port'))
+    #networks = get_cluster_addr('monitoring-network')
+
+# TODO: add relation broken and departed relations, remove application etc. cleanup
+# service ceph_exporter stop
+# apt purge ceph-exporter
+# deconfigure prometheus port is done
+# done: binds to wrong space, should be OAM, use monitoring-network
+# add note missing relation:
+# juju add-relation ceph-exporter:target proometheus:target
+# add managed updates

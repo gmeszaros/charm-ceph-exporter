@@ -46,3 +46,8 @@
     "type": "string"
     "description": |
       URL path for surfacing collected metrics (default "/metrics")
+  "monitoring-network":
+    "default": ""
+    "type": "string"
+    "descritpion": |
+      subnet to which the exporter binds
