@@ -167,13 +167,18 @@ def configure_ceph_exporter_relation(target):
     config = hookenv.config()
     if data_changed('target.config', config):
         target.configure(hostname=get_monitoring_addr(), port=config.get('port'))
-    #networks = get_cluster_addr('monitoring-network')
+        hookenv.status_set('active', 'Ready')
 
-# TODO: add relation broken and departed relations, remove application etc. cleanup
-# service ceph_exporter stop
-# apt purge ceph-exporter
-# deconfigure prometheus port is done
+@when('ceph-exporter.started')
+@when_not('target.available')
+def setup_target_relation():
+    hookenv.status_set('waiting', 'Waiting for: prometheus')
+
+@when('ceph-exporter.departed')
+def remove_packages():
+   fetch.apt_purge(PKGNAMES, fatal=True)
+ 
+# todo: remove application when charm removed
+# done: deconfigure prometheus, on relation def
 # done: binds to wrong space, should be OAM, use monitoring-network
-# add note missing relation:
-# juju add-relation ceph-exporter:target proometheus:target
-# add managed updates
+# done: add note missing relation:# juju add-relation ceph-exporter:target proometheus:target
