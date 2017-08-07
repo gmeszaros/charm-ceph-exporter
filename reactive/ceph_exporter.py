@@ -5,6 +5,7 @@ from charmhelpers.core.templating import render
 from charms.reactive import (
     when, when_not, when_any, set_state, remove_state
 )
+from charms.reactive import hook
 from charms.reactive.helpers import any_file_changed, data_changed
 from charmhelpers.contrib.network.ip import (
     get_address_in_network,
@@ -174,8 +175,10 @@ def configure_ceph_exporter_relation(target):
 def setup_target_relation():
     hookenv.status_set('waiting', 'Waiting for: prometheus')
 
-@when('ceph-exporter.departed')
+@hook('stop')
+def hook_handler_stop():
+    set_state('ceph-exporter.stopped')
+
+@when('ceph-exporter.stopped')
 def remove_packages():
    fetch.apt_purge(PKGNAMES, fatal=True)
- 
-# todo: remove application when charm removed
