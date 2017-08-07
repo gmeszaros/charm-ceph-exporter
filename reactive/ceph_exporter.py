@@ -179,6 +179,3 @@ def remove_packages():
    fetch.apt_purge(PKGNAMES, fatal=True)
  
 # todo: remove application when charm removed
-# done: deconfigure prometheus, on relation def
-# done: binds to wrong space, should be OAM, use monitoring-network
-# done: add note missing relation:# juju add-relation ceph-exporter:target proometheus:target
