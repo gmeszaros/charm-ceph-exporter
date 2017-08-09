@@ -113,8 +113,12 @@ def restart_ceph_exporter():
 def configure_ceph_exporter_relation(target):
     config = hookenv.config()
     if data_changed('target.config', config):
-        target.configure(hostname=resolve_address(endpoint_type=INTERNAL), port=config.get('port'))
-        hookenv.status_set('active', 'Ready')
+      try:
+        hostname=hookenv.network_get_primary_address('target').decode("utf-8")
+      except NotImplementedError:
+        hostname=resolve_address(endpoint_type=INTERNAL)
+      target.configure(hostname=hostname, port=config.get('port'))
+      hookenv.status_set('active', 'Ready')
 
 @when('ceph-exporter.started')
 @when_not('target.available')
