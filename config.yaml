@@ -4,7 +4,7 @@
     "default": !!int "9128"
     "description": "Prometheus ceph_exporter listening port (default 9128)"
   "install_sources":
-    "default": ""
+    "default":
     "type": "string"
     "description": |
       YAML list of additional installation sources, as a string. The number of
@@ -13,7 +13,7 @@
          - ppa:project1/ppa
          - ppa:project2/ppa
   "install_keys":
-    "default": ""
+    "default":
     "type": "string"
     "description": "YAML list of GPG keys for installation sources, as a string. For\
       \ apt repository\nURLs, use the public key ID used to verify package signatures.\
@@ -22,32 +22,32 @@
       all empty string. An example to go with the above for install_sources:\n  install_keys:\
       \ |\n   - \"ABC\"\n   - \"\"\n"
   "ceph.config":
-    "default": ""
+    "default":
     "type": "string"
     "description": |
       path to ceph config file (default /etc/ceph/ceph.conf)
   "ceph.user":
-    "default": ""
+    "default":
     "type": "string"
     "description": |
       Ceph user to connect to cluster. (default "admin")
   "exporter.config":
-    "default": ""
+    "default":
     "type": "string"
     "description": |
       Path to ceph exporter config. (default "/etc/ceph/exporter.yml")
   "telemetry.addr":
-    "default": ""
+    "default":
     "type": "string"
     "description": |
       host part of exporter telemetry.addr, port is set via port option (no default)
   "telemetry.path": 
-    "default": ""
+    "default":
     "type": "string"
     "description": |
       URL path for surfacing collected metrics (default "/metrics")
-  "monitoring-network":
-    "default": ""
+  "os-internal-network":
+    "default":
     "type": "string"
     "descritpion": |
       subnet to which the exporter binds

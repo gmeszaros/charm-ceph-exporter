@@ -6,6 +6,8 @@
   collectors.
 "tags":
 - "monitoring"
+extra-bindings:
+  internal:
 "requires":
   "host":
     "interface": "juju-info"
