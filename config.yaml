@@ -46,3 +46,9 @@
     "type": "string"
     "description": |
       URL path for surfacing collected metrics (default "/metrics")
+  "os-internal-network":
+    "default":
+    "type": "string"
+    "descritpion": |
+      subnet to which the exporter binds, consider using target space binding instead
+
